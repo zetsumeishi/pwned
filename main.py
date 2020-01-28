@@ -1,21 +1,18 @@
-"""
-[
-    {
-        'olivier.loustaunau@gmail.com': [
-            {},
-            {},
-        ]
-    },
-]
-"""
-
+# -*- coding: utf-8 -*-
 import json
 import requests
 from time import sleep
 from itertools import product
-from config import API_KEY, API_URL, DOMAINS, NAMES
+from config import API_KEY, API_URL, DOMAINS, NAMES, HEADERS
 
 headers = {"User-Agent": "pwned", "hibp-api-key": API_KEY}
+
+
+class HIPB(object):
+    """docstring for HIPB."""
+
+    def __init__(self):
+        super(HIPB, self).__init__()
 
 
 class Account(object):
@@ -47,11 +44,12 @@ class Breach(object):
 
 def display_results(results):
     for user in results:
-        print(f"{user.email}:")
+        print("{}:".format(user.email))
         for breach in user.breaches:
             print(
-                f"\tName: {breach.title}\n"
-                f"\t{breach.pwn_count} people pwned on {breach.breach_date}"
+                "\tName: {}\n\t{} people pwned on {}".format(
+                    breach.title, breach.pwn_count, breach.breach_date
+                )
             )
 
 
@@ -59,9 +57,11 @@ def to_dict(response):
     return json.loads(response.content)
 
 
-def request(service=None, query=None):
+def request(service=None, query=None, params=None):
     sleep(2)
-    response = requests.get(f"{API_URL}/{service}/{query}", headers=headers)
+    response = requests.get(
+        "{}/{}/{}?{}".format(API_URL, service, query, params), headers=HEADERS
+    )
     if response:
         return to_dict(response)
 
