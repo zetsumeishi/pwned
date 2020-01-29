@@ -1,16 +1,11 @@
-# -*- coding: utf-8 -*-
 import json
 import requests
 from time import sleep
 from itertools import product
-from config import API_KEY, API_URL, DOMAINS, NAMES, HEADERS
-
-headers = {"User-Agent": "pwned", "hibp-api-key": API_KEY}
+from config import API_URL, DOMAINS, NAMES, HEADERS
 
 
 class HIPB(object):
-    """docstring for HIPB."""
-
     def __init__(self):
         super(HIPB, self).__init__()
 
